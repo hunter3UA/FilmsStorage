@@ -1,0 +1,36 @@
+﻿@model FilmsStorage.Models.ViewModels.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<div class="text-danger">@ViewBag.ErrorMessage</div>
+
+
+@using (Html.BeginForm("Login", "Profile", FormMethod.Post, new { @class = "form" }))
+{
+    <div class="row form-group">
+
+        @Html.LabelFor(m => m.LoginName, "Логін користувача: ", new { @class = "col-sm-4" })
+        <div class="col">
+            @Html.TextBoxFor(m => m.LoginName, new { @class = "form-control" })
+            <small>
+                @Html.ValidationMessageFor(m => m.LoginName, "", new { @class = "text-danger" })
+            </small>
+        </div>
+    </div>
+    <div class="row form-group">
+
+        @Html.LabelFor(m => m.Password, "Пароль: ", new { @class = "col-sm-4" })
+        <div class="col">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            <small>
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </small>
+        </div>
+    </div>
+    <input type="submit" value="Enter" class="btn btn-info" />
+
+}

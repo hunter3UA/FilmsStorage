@@ -1,0 +1,54 @@
+﻿@model IEnumerable<FilmsStorage.Models.DB.v_Film>
+
+
+<table class="table">
+    <tr>
+        <th>
+            ID:
+        </th>
+        <th>
+            Name:
+        </th>
+        <th>
+            Release:
+        </th>
+        
+        <th>
+            fileDescription:
+        </th>
+    
+        <th>
+            GenreName:
+        </th>
+        
+        <th>
+            Actions:
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FilmID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FilmName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Release)
+        </td>     
+        <td>
+            @Html.DisplayFor(modelItem => item.fileDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GenreName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new {  id=item.FilmID  }, new {@class = "btn btn-info"}) |
+            @Html.ActionLink("Details", "Details", new {  id=item.FilmID }, new { @class = "btn btn-success" }) |
+            @Html.ActionLink("Delete", "Delete", new {  id=item.FilmID }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>

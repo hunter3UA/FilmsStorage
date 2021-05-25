@@ -1,0 +1,85 @@
+﻿@model FilmsStorage.Models.ViewModels.FilmAddModel
+@using FilmsStorage.Models.DB;
+@{
+    ViewBag.Title = "Add";
+    List<SelectListItem> genres = new List<SelectListItem>();
+    foreach (Genre genre in Model.Genres)
+    {
+        genres.Add(new SelectListItem { Value = genre.GenreID.ToString(), Text = genre.GenreName });
+    }
+
+    
+}
+
+<h2>Upload a new Film</h2>
+
+@if (ViewBag.ErrorMsg != null)
+{
+    <div class="errorMsg">
+        @ViewBag.ErrorMsg
+    </div>
+}
+
+@using (Html.BeginForm("Add", "Films", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
+{
+    // name
+    <div class="row form-group">
+        @Html.LabelFor(m => m.FilmName, "Назва фільма: ", new { @class = "col-sm-4" })
+        <div class="col">
+            @Html.TextBoxFor(m => m.FilmName, new { @class = "form-control" })
+            <small>
+                @Html.ValidationMessageFor(m => m.FilmName, "", new { @class = "text-danger" })
+            </small>
+        </div>
+    </div>
+    // release
+    <div class="row form-group">
+
+        @Html.LabelFor(m => m.Release, "Рік випуску: ", new { @class = "col-sm-4" })
+        <div class="col">
+            @Html.TextBoxFor(m => m.Release, new { @class = "form-control", type="number", min="1895", max=DateTime.Now.Year.ToString(), value= DateTime.Now.Year.ToString() })
+            <small>
+                @Html.ValidationMessageFor(m => m.Release, "", new { @class = "text-danger" })
+            </small>
+        </div>
+    </div>
+
+    // genre
+    <div class="row form-group">
+        <label for="Genre" class = "col-sm-4">Genre</label>
+        <div class="col">
+            @Html.DropDownListFor(m=>m.GenreID, genres)
+            <small>
+                @Html.ValidationMessageFor(m => m.Release, "", new { @class = "text-danger" })
+            </small>
+        </div>
+    </div>
+
+
+    // description
+    <div class="row form-group">
+
+        @Html.LabelFor(m => m.fileDescription, "Опис фільму: ", new { @class = "col-sm-4" })
+        <div class="col">
+            @Html.TextBoxFor(m => m.fileDescription, new { @class = "form-control" })
+            <small>
+                @Html.ValidationMessageFor(m => m.fileDescription, "", new { @class = "text-danger" })
+            </small>
+        </div>
+    </div>
+    //Film file
+    <div class="row form-group">
+        <label for="File" class="col-sm-4">Genre</label>
+        <div>
+            <input type="file" name="FilmFile" />
+        </div>
+    </div>
+
+    <input type="submit" value="upload film" class="btn btn-info" />
+
+}
+@section scripts{
+    <script>
+        $("#Release").val("@DateTime.Now.Year.ToString()");
+    </script>   
+} 

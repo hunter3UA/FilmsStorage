@@ -1,0 +1,18 @@
+﻿@model FilmsStorage.Models.DB.User
+
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<h3>Hello @Model.UserName</h3>
+
+ @Html.ActionLink("Add Film", "Add", "Films", null, new { @class = "btn btn-info" })
+
+<div style="margin-top: 10px; border:1px solid grey" class="bg-light">
+    @{ Html.RenderAction("ByUser", "Films");}
+
+</div>

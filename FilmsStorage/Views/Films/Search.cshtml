@@ -1,0 +1,116 @@
+﻿@model FilmsStorage.Models.ViewModels.FilmAddModel
+@using FilmsStorage.Models.DB;
+@{
+    ViewBag.Title = "Search";
+    List<SelectListItem> genres = new List<SelectListItem>();
+    foreach (Genre genre in Model.Genres)
+    {
+        genres.Add(new SelectListItem { Value = genre.GenreID.ToString(), Text = genre.GenreName });
+    }
+    
+}
+
+<h2>Search Films</h2>
+
+<div class="container-fluid">
+    Film Name:
+    <input type="radio" name="searchType" id="searchTypeName" value="name" checked="checked" />
+    Year Range:
+    <input type="radio" name="searchType" id="searchTypeYears" value="years" />
+    Genre:
+    <input type="radio" name="searchType" id="searchTypeGenres" value="genre" />
+
+    <div style="margin-top:10px;">
+        @using (Ajax.BeginForm("ByName", null,
+            new AjaxOptions { UpdateTargetId = "filmSearchResults" },
+            new { id = "formSearchByName", @class = "show" }))
+        {
+            <table>
+                <tr>
+                    <td>Film name:</td>
+                    <td><input type="text" name="filmName" /></td>
+                    <td><input type="submit" name="Search" /></td>
+                </tr>
+            </table>
+        }
+        @using (Ajax.BeginForm("ByYears", null,
+          new AjaxOptions { UpdateTargetId = "filmSearchResults" },
+          new { id = "formSearchByYears", @class = "hide" }))
+        {
+            <table>
+                <tr>
+                    <td>Year from:</td>
+                    <td><input type="number" min="1895" , max="@DateTime.Now.ToString()" name="yearFrom" value="@DateTime.Now.ToString()" /></td>
+                    <td>Year To:</td>
+                    <td><input type="number" min="1895" , max="@DateTime.Now.ToString()" name="yearTo" value="@DateTime.Now.ToString()" /></td>
+                    <td><input type="submit" name="Search" /></td>
+                </tr>
+            </table>
+        }
+        @using (Ajax.BeginForm("ByGenres", null,
+         new AjaxOptions { UpdateTargetId = "filmSearchResults" },
+         new { id = "formSearchByGenre", @class = "hide" }))
+        {
+            <table>
+                <tr>
+                    <td> Genre:</td>                                                                                
+                    <td>@Html.DropDownListFor(m => m.GenreID, genres)</td>
+                    <td><input type="submit" name="Search" /></td>
+                </tr>
+            </table>
+        }
+    </div>
+</div>
+
+<div id="filmSearchResults">
+
+</div>
+
+@section  scripts{
+    <script>
+        const formSearchByName = $("#formSearchByName");
+        const formSearchByYears = $("#formSearchByYears");
+        const formSearchByGenres = $("#formSearchByGenre");
+        const searchTypeSelector = $("input[type=radio][name=searchType");
+        searchTypeSelector.change(function () {
+            switch (this.value) {
+                case "name": {
+                    formSearchByName.removeClass("hide");
+                    formSearchByName.addClass("show");
+
+                    formSearchByYears.removeClass("show");
+                    formSearchByYears.addClass("hide");
+
+                    formSearchByGenre.removeClass("show");
+                    formSearchByGenre.addClass("hide");
+                    break;
+                }
+                case "years": {
+                    formSearchByName.removeClass("show");
+                    formSearchByName.addClass("hide");
+
+
+                    formSearchByYears.removeClass("hide");
+                    formSearchByYears.addClass("show");
+
+                    formSearchByGenre.removeClass("show");
+                    formSearchByGenre.addClass("hide");
+                    break;
+
+                }
+                case "genre": {
+                    formSearchByName.removeClass("show");
+                    formSearchByName.addClass("hide");
+
+                    formSearchByYears.removeClass("show");
+                    formSearchByYears.addClass("hide");
+
+                    formSearchByGenres.removeClass("hide");
+                    formSearchByGenres.addClass("show");
+                }
+            }
+        });
+    </script>
+
+
+}
